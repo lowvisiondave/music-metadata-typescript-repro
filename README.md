@@ -1,34 +1,19 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a reproduction repro for a TypeScript error with [music-metadata](https://github.com/Borewit/music-metadata).
 
-## Getting Started
+## Issue
 
-First, run the development server:
+TypeScript throw an error when doing the following:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```ts
+import { parseFile } from "music-metadata";
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Because `node_modules/music-metadata/lib/core.d.ts` does not include a type for `parseFile`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Adding `// @ts-expect-error` allows the application to build successfully, so it seems to just a types issue.
 
-## Learn More
+## How to reproduce
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Run `pnpm install`
+1. Run `pnpm build`
+1. See error in console
